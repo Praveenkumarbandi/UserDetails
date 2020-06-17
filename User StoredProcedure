@@ -1,0 +1,97 @@
+USE [UserDetails]
+GO
+
+/****** Object:  StoredProcedure [dbo].[Usp_InsertUpdateDelete_User]    Script Date: 17-Jun-20 7:29:04 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+-- =============================================
+-- Author:		<Author,,Name>
+-- Create date: <Create Date,,>
+-- Description:	<Description,,>
+-- =============================================
+CREATE PROCEDURE [dbo].[Usp_InsertUpdateDelete_User]
+
+@userID int =NULL,
+@firstName varchar(50)= NULL,
+@middleName varchar(50)= NULL,
+@lastName varchar(50)= NULL,
+@email varchar(50)= NULL,
+@mobile varchar(50)= NULL,
+@address varchar(300)= NULL,
+@pincode varchar(50)= NULL,
+@state varchar(50)=NULL,
+@Query INT  
+
+AS
+BEGIN
+
+	SET NOCOUNT ON;
+
+
+    -- Insert statements for procedure here
+		IF (@Query = 1)  
+		BEGIN
+	         INSERT INTO [dbo].[User]
+           ([FirstName]
+           ,[MiddleName]
+           ,[LastName]
+           ,[EMail]
+           ,[Mobile]
+           ,[Address]
+           ,[PinCode]
+           ,[State]
+           ,[CreatedDate]
+           ,[ModifiedDate])
+     VALUES
+           (@firstName,@middleName,@lastName,@email,@mobile,@address,@pincode,@state,GETDATE(),GETDATE())
+		     
+			 --IF (@@ROWCOUNT > 0)  
+				--BEGIN  
+				--     SELECT 'Insert'  
+				--END  
+        END
+
+		--Update
+		IF (@Query = 2)  
+		BEGIN  
+			UPDATE [dbo].[User]
+			   SET [FirstName] = @firstName
+				  ,[MiddleName] = @middleName
+				  ,[LastName] = @lastName
+				  ,[EMail] = @email
+				  ,[Mobile] = @mobile
+				  ,[Address] = @address
+				  ,[PinCode] = @pincode
+				  ,[State] = @state
+				  ,[CreatedDate] = GETDATE()
+				  ,[ModifiedDate] = GETDATE()
+			 WHERE UserId=@userID
+		--SELECT 'Update'  
+		END 
+
+		--Delete
+		IF (@Query = 3)  
+			BEGIN  
+			     DELETE FROM [dbo].[User]  WHERE UserId = @userID  
+			     --SELECT 'Deleted'  
+			END 
+
+		IF (@Query = 4)  
+				BEGIN  
+					 SELECT * FROM [dbo].[User]  
+				END  
+
+        IF (@Query = 5)  
+                BEGIN  
+                     SELECT * FROM [dbo].[User]  WHERE UserId = @userID  
+                END 
+END  
+
+
+GO
+
+
